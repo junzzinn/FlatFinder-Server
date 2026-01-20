@@ -1,0 +1,29 @@
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+
+function signToken(user) {
+  return jwt.sign(
+    { sub: user._id.toString(), isAdmin: !!user.isAdmin },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRES_IN || "5m" }
+  );
+}
+
+async function requireAuth(req, res, next) {
+  try {
+    const header = req.headers.authorization || "";
+    const [, token] = header.split(" ");
+    if (!token) return res.status(401).json({ message: "Missing token" });
+
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(payload.sub).select("-password");
+    if (!user) return res.status(401).json({ message: "Invalid token" });
+
+    req.user = user;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "Unauthorized", error: err.message });
+  }
+}
+
+module.exports = { signToken, requireAuth };
