@@ -4,6 +4,7 @@ const morgan = require("morgan");
 
 const usersRoutes = require("./routes/users.routes");
 const flatsRoutes = require("./routes/flats.routes");
+const messagesRoutes = require("./routes/messages.routes");
 
 const { requireAuth } = require("./middleware/auth");
 
@@ -18,6 +19,8 @@ app.get("/health", (req, res) => res.json({ ok: true }));
 app.use("/users", usersRoutes);
 
 app.use(requireAuth);
+
 app.use("/flats", flatsRoutes);
+app.use("/flats", messagesRoutes);
 
 module.exports = app;
