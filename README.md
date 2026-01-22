@@ -1,5 +1,15 @@
-# FlatFinder Server Side (Node/Express + MongoDB)
+## FlatFinder API
 
-REST API server for FlatFinder.
-Tech: Node, Express, MongoDB, JWT.
-# FlatFinder-Server
+### Tech Stack
+- Node.js
+- Express
+- MongoDB
+- JWT
+- Docker (Mongo + Mongo Express)
+
+### How to run
+```bash
+docker compose up -d
+cd server
+npm install
+npm run dev
